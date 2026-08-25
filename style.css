@@ -26,3 +26,5 @@ button,select{font:inherit}.topbar{height:76px;padding:0 5%;display:flex;align-i
 .answer.true.selected{background:var(--green-bg);border-color:var(--green);color:var(--green)}
 .answer.false.selected{background:var(--red-bg);border-color:var(--red);color:var(--red)}
 .answer.true:not(.selected),.answer.false:not(.selected){opacity:.42}
+
+.book-code{display:block;color:var(--primary);font-size:10px;letter-spacing:.7px;margin-bottom:4px;font-weight:800}
