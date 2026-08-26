@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patente Quiz • Italian Driving Licence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f7fb;--card:rgba(255,255,255,.78);--card-solid:#fff;--text:#172033;
+  --muted:#68738a;--line:#e6eaf1;--primary:#635bff;--primary2:#8b5cf6;
+  --green:#16a34a;--green-bg:#dcfce7;--red:#dc2626;--red-bg:#fee2e2;
+  --shadow:0 18px 50px rgba(31,41,55,.10)
+}
+body.dark{
+  --bg:#0b1020;--card:rgba(18,25,45,.82);--card-solid:#12192d;--text:#f3f6ff;
+  --muted:#a5aec3;--line:#27314a;--primary:#8b7cff;--primary2:#a78bfa;
+  --green:#4ade80;--green-bg:#123a25;--red:#fb7185;--red-bg:#421b25;
+  --shadow:0 18px 55px rgba(0,0,0,.35)
+}
+body{font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:.3s}
+button,select{font:inherit}.topbar{height:76px;padding:0 5%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);background:var(--card);backdrop-filter:blur(18px);position:sticky;top:0;z-index:20}
+.brand{display:flex;align-items:center;gap:12px}.brand-icon{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,var(--primary),var(--primary2));box-shadow:0 8px 22px rgba(99,91,255,.28);font-size:22px}.brand strong{display:block;font:800 20px Outfit}.brand span{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+.toolbar{display:flex;gap:10px}.toolbar select,.icon-btn{border:1px solid var(--line);background:var(--card-solid);color:var(--text);border-radius:12px;padding:10px 12px;cursor:pointer}.icon-btn{width:44px}
+.app{max-width:1400px;margin:0 auto;padding:30px 4%;display:grid;grid-template-columns:280px 1fr;gap:28px;position:relative;z-index:1}
+.sidebar,.hero,.question-card{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:blur(16px);border-radius:24px}
+.sidebar{padding:20px;height:max-content;position:sticky;top:100px}.side-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.side-title small,.eyebrow,.section-tag{font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--primary)}.side-title h2{font:700 20px Outfit;margin-top:4px}.pill{background:var(--primary);color:#fff;border-radius:20px;padding:5px 10px;font-size:12px}
+.topic-list{display:grid;gap:8px}.topic-btn{width:100%;border:1px solid transparent;background:transparent;color:var(--text);padding:13px;border-radius:14px;text-align:left;cursor:pointer;display:flex;align-items:center;gap:10px;transition:.2s}.topic-btn:hover{background:rgba(99,91,255,.08)}.topic-btn.active{background:linear-gradient(135deg,rgba(99,91,255,.14),rgba(139,92,246,.10));border-color:rgba(99,91,255,.25);color:var(--primary)}.topic-num{width:28px;height:28px;display:grid;place-items:center;border-radius:9px;background:var(--line);font-size:12px;font-weight:800}.topic-btn.active .topic-num{background:var(--primary);color:#fff}.topic-name{font-weight:600;font-size:13px;flex:1}.topic-q{font-size:11px;color:var(--muted)}
+.content{min-width:0}.hero{padding:28px;display:flex;justify-content:space-between;gap:30px;align-items:end;margin-bottom:25px}.hero h1{font:800 clamp(28px,4vw,44px) Outfit;margin:7px 0}.hero p{color:var(--muted);max-width:650px}.progress-wrap{width:250px}.progress-text{display:flex;justify-content:space-between;font-size:12px;margin-bottom:8px}.progress-text b{color:var(--primary)}.progress{height:9px;background:var(--line);border-radius:20px;overflow:hidden}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--primary),var(--primary2));border-radius:20px;transition:.35s}
+.quiz-head{display:flex;align-items:center;justify-content:space-between;margin:0 4px 15px}.quiz-head h2{font:700 22px Outfit;margin-top:4px}.ghost-btn{border:1px solid var(--line);background:var(--card-solid);color:var(--text);border-radius:11px;padding:9px 13px;cursor:pointer}.questions{display:grid;gap:15px}.question-card{padding:20px;transition:.25s}.question-card:hover{transform:translateY(-2px)}.question-top{display:flex;gap:14px}.q-number{min-width:38px;height:38px;border-radius:11px;background:rgba(99,91,255,.12);color:var(--primary);display:grid;place-items:center;font-weight:800}.q-text{font-weight:600;font-size:22px;line-height:1.7;flex:1}.answer-row{display:flex;gap:8px;margin:0}.answer{border:2px solid var(--line);background:var(--card-solid);color:var(--text);padding:0!important;border-radius:50%!important;cursor:pointer;font-weight:800;font-size:14px;min-width:54px!important;width:54px!important;height:54px!important;aspect-ratio:1/1;transition:.2s;display:grid!important;place-items:center!important;line-height:1!important;flex:0 0 54px!important}.answer.true.selected{background:var(--green-bg);border-color:var(--green);color:var(--green)}.answer.false.selected{background:var(--red-bg);border-color:var(--red);color:var(--red)}.answer.true:not(.selected):hover{border-color:var(--green);color:var(--green)}.answer.false:not(.selected):hover{border-color:var(--red);color:var(--red)}.translation{margin:14px 0 0 52px;padding:12px 14px;border-radius:12px;background:rgba(99,91,255,.06);border-left:3px solid var(--primary);color:var(--muted);font-size:13px;line-height:1.55}.translation b{color:var(--text);display:block;margin-bottom:4px}.pager{display:flex;align-items:center;justify-content:center;gap:18px;margin:28px 0 8px}.nav-btn{border:1px solid var(--line);background:var(--card-solid);color:var(--text);border-radius:13px;padding:12px 18px;cursor:pointer;font-weight:700}.nav-btn.primary{background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;border:0}.nav-btn:disabled{opacity:.4;cursor:not-allowed}#pageText{font-weight:700;color:var(--muted);min-width:60px;text-align:center}footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 10px}.bg-orb{position:fixed;border-radius:50%;filter:blur(70px);opacity:.22;pointer-events:none;z-index:0;animation:float 10s ease-in-out infinite alternate}.orb1{width:320px;height:320px;background:#ff4ecd;top:7%;left:-100px}.orb2{width:300px;height:300px;background:#38bdf8;right:-80px;top:35%;animation-delay:-3s}.orb3{width:260px;height:260px;background:#8b5cf6;left:45%;bottom:-100px;animation-delay:-6s}@keyframes float{to{transform:translate(35px,-25px) scale(1.12)}}
+/* Desktop: place V/F buttons beside each question */
+@media(min-width:901px){
+  .question-card{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 108px;
+    column-gap:20px;
+    align-items:center
+  }
+  .question-top{
+    grid-column:1
+  }
+  .answer-row{
+    grid-column:2;
+    grid-row:1;
+    justify-content:center;
+    align-items:center
+  }
+  .translation{
+    grid-column:1 / -1;
+    margin-left:52px;
+    margin-top:14px
+  }
+}
+
+/* Extra-large question text on medium/large screens */
+@media(min-width:901px){
+  .q-text{font-size:23px}
+}
+
+/* Keep the V/F controls compact on phones */
+@media(max-width:900px){
+  .answer-row{
+    margin:14px 0 0 52px
+  }
+}
+
+@media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{position:relative;top:0}.topic-list{grid-template-columns:repeat(2,1fr)}.hero{flex-direction:column;align-items:stretch}.progress-wrap{width:100%}}@media(max-width:560px){.topbar{padding:0 4%;height:68px}.brand span{display:none}.toolbar select{max-width:125px}.app{padding:18px 3%;gap:18px}.topic-list{grid-template-columns:1fr}.hero,.question-card{padding:17px}.answer-row{margin:20px auto 0;justify-content:center}.translation{margin-left:0}.answer{min-width:0;flex:1}.pager{gap:8px}.nav-btn{padding:11px 10px;font-size:12px}}
+
+.auto-answer{cursor:default;pointer-events:none;display:flex;align-items:center;justify-content:center}
+.answer.true.selected{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+.answer.false.selected{background:var(--red-bg);border-color:var(--red);color:var(--red)}
+.answer.true:not(.selected),.answer.false:not(.selected){opacity:.42}
+
+.book-code{display:block;color:var(--primary);font-size:10px;letter-spacing:.7px;margin-bottom:4px;font-weight:800}
+
+
+/* FINAL V/F BUTTON OVERRIDE: 100% ROUND */
+.answer,
+button.answer {
+  width: 54px !important;
+  min-width: 54px !important;
+  max-width: 54px !important;
+  height: 54px !important;
+  min-height: 54px !important;
+  max-height: 54px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  aspect-ratio: 1 / 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+  flex: 0 0 54px !important;
+}
+
+/* FINAL: CENTER V/F BUTTONS IN QUESTION CONTAINER */
+.answer-row {
+  width: 100% !important;
+  margin: 20px auto 0 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 14px !important;
+}
+
+/* TOPIC SEARCH — BELOW HEADER */
+.search-section{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  padding:18px 5% 0;
+  position:relative;
+  z-index:10;
+}
+/* TOP TOPIC SEARCH */
+.search-box{
+  position:relative;
+  display:flex;
+  align-items:center;
+  width:min(320px,34vw);
+  height:44px;
+}
+.search-box input{
+  width:100%;
+  height:100%;
+  border:1px solid var(--line);
+  background:var(--card-solid);
+  color:var(--text);
+  border-radius:22px;
+  padding:0 40px 0 40px;
+  outline:none;
+  font-size:13px;
+  transition:.2s;
+}
+.search-box input:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(99,91,255,.10);
+}
+.search-icon{
+  position:absolute;
+  left:14px;
+  z-index:2;
+  pointer-events:none;
+}
+.clear-search{
+  position:absolute;
+  right:8px;
+  width:28px;
+  height:28px;
+  border:0;
+  border-radius:50%;
+  background:transparent;
+  color:var(--muted);
+  cursor:pointer;
+  display:none;
+  font-size:20px;
+  line-height:28px;
+}
+.clear-search:hover{
+  background:var(--line);
+}
+.topic-btn.search-hidden{
+  display:none;
+}
+.search-empty{
+  display:none;
+  text-align:center;
+  padding:20px 10px;
+  color:var(--muted);
+  font-size:13px;
+}
+@media(max-width:900px){
+  .search-box{width:min(280px,45vw)}
+}
+@media(max-width:560px){
+  .toolbar{gap:6px}
+  .search-box{width:150px;height:40px}
+  .search-box input{font-size:11px;padding-left:34px;padding-right:32px}
+  .search-icon{left:11px;font-size:13px}
+}
+
+/* FULL-WIDTH LARGE TOPIC SEARCH */
+.search-section{
+  width:100% !important;
+  padding:20px 4% 0 !important;
+}
+.search-section .search-box{
+  width:100% !important;
+  max-width:none !important;
+  height:58px !important;
+}
+.search-section .search-box input{
+  width:100% !important;
+  height:58px !important;
+  border-radius:29px !important;
+  font-size:19px !important;
+  font-weight:500 !important;
+  padding-left:52px !important;
+  padding-right:55px !important;
+}
+.search-section .search-icon{
+  left:20px !important;
+  font-size:20px !important;
+}
+.search-section .clear-search{
+  right:14px !important;
+  width:36px !important;
+  height:36px !important;
+  font-size:26px !important;
+}
+@media(max-width:560px){
+  .search-section{
+    padding:15px 3% 0 !important;
+  }
+  .search-section .search-box,
+  .search-section .search-box input{
+    height:52px !important;
+  }
+  .search-section .search-box input{
+    border-radius:26px !important;
+    font-size:17px !important;
+    padding-left:45px !important;
+  }
+}
+
+
+/* ===== MODERN PREMIUM REDESIGN ===== */
+:root{
+  --bg:#eef2ff;
+  --card:rgba(255,255,255,.72);
+  --card-solid:rgba(255,255,255,.94);
+  --text:#111827;
+  --muted:#64748b;
+  --line:rgba(148,163,184,.22);
+  --primary:#5b5cf0;
+  --primary2:#9b5cff;
+  --accent:#22c55e;
+  --shadow:0 24px 70px rgba(30,41,59,.12);
+}
+body.dark{
+  --bg:#070b18;
+  --card:rgba(15,23,42,.68);
+  --card-solid:rgba(15,23,42,.94);
+  --text:#f8fafc;
+  --muted:#94a3b8;
+  --line:rgba(148,163,184,.18);
+  --primary:#7c7dff;
+  --primary2:#b06cff;
+  --shadow:0 28px 80px rgba(0,0,0,.38);
+}
+body{
+  font-family:Inter,'Noto Sans Arabic',sans-serif;
+  background:
+    radial-gradient(circle at 10% 15%,rgba(99,102,241,.13),transparent 30%),
+    radial-gradient(circle at 90% 20%,rgba(168,85,247,.12),transparent 28%),
+    radial-gradient(circle at 50% 100%,rgba(14,165,233,.10),transparent 30%),
+    var(--bg);
+}
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.35;
+  background-image:linear-gradient(rgba(99,102,241,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(99,102,241,.035) 1px,transparent 1px);
+  background-size:32px 32px;mask-image:linear-gradient(to bottom,black,transparent 85%);
+}
+.topbar{
+  height:82px;padding:0 clamp(18px,5vw,72px);
+  background:rgba(255,255,255,.60);border-bottom:1px solid rgba(255,255,255,.45);
+  box-shadow:0 8px 35px rgba(30,41,59,.07);backdrop-filter:blur(24px) saturate(150%);
+}
+body.dark .topbar{background:rgba(7,11,24,.62);border-bottom-color:rgba(255,255,255,.08)}
+.brand{gap:14px}.brand-icon{
+  width:50px;height:50px;border-radius:17px;font-size:25px;
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+  box-shadow:0 12px 30px rgba(91,92,240,.35);position:relative;overflow:hidden;
+  animation:brandFloat 4s ease-in-out infinite;
+}
+.brand-icon:after{content:"";position:absolute;inset:-60%;background:linear-gradient(110deg,transparent 40%,rgba(255,255,255,.42),transparent 60%);transform:translateX(-50%) rotate(15deg);animation:shine 4s linear infinite}
+.brand strong{font:800 22px Outfit;letter-spacing:-.3px}.brand span{font-size:11px}.brand-copy{min-width:155px}.brand-badge{
+  display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.8px;
+  color:var(--primary);background:rgba(91,92,240,.09);border:1px solid rgba(91,92,240,.16)
+}
+.toolbar{gap:8px}.toolbar select,.icon-btn{height:46px;border-radius:15px;background:var(--card-solid);border:1px solid var(--line);box-shadow:0 7px 20px rgba(15,23,42,.05);transition:.25s}
+.toolbar select:hover,.icon-btn:hover{transform:translateY(-2px);border-color:rgba(91,92,240,.35);box-shadow:0 10px 25px rgba(91,92,240,.12)}
+.icon-btn{width:46px}
+.search-section{padding:22px clamp(18px,4vw,60px) 0!important;position:relative;z-index:5}
+.search-section .search-box{height:66px!important;width:100%!important;max-width:1500px!important;margin:auto;position:relative}
+.search-section .search-box input{
+  height:66px!important;border-radius:22px!important;font-size:18px!important;font-weight:600!important;
+  padding:0 58px!important;background:rgba(255,255,255,.78)!important;border:1px solid rgba(148,163,184,.20)!important;
+  box-shadow:0 16px 40px rgba(30,41,59,.08),inset 0 1px 0 rgba(255,255,255,.8)!important;
+  transition:.3s!important;
+}
+body.dark .search-section .search-box input{background:rgba(15,23,42,.82)!important}
+.search-section .search-box input:focus{transform:translateY(-2px);border-color:rgba(91,92,240,.45)!important;box-shadow:0 18px 45px rgba(91,92,240,.14),0 0 0 5px rgba(91,92,240,.08)!important}
+.search-icon{font-size:22px!important;left:21px!important}.clear-search{font-size:27px!important;width:38px!important;height:38px!important;right:14px!important}
+.app{max-width:1500px;padding:26px clamp(18px,4vw,60px) 34px;grid-template-columns:300px minmax(0,1fr);gap:30px}
+.sidebar,.hero,.question-card{border-radius:26px;border:1px solid rgba(255,255,255,.55);box-shadow:var(--shadow);backdrop-filter:blur(24px) saturate(150%);position:relative;overflow:hidden}
+body.dark .sidebar,body.dark .hero,body.dark .question-card{border-color:rgba(255,255,255,.07)}
+.sidebar:before,.hero:before,.question-card:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(135deg,rgba(255,255,255,.18),transparent 45%)}
+.sidebar{padding:22px;top:108px}
+.side-title{margin-bottom:20px}.side-title h2{font-size:22px}.pill{padding:7px 12px;box-shadow:0 8px 18px rgba(91,92,240,.25)}
+.topic-list{gap:10px}.topic-btn{
+  position:relative;padding:14px 13px;border-radius:17px;border:1px solid transparent;overflow:hidden;transition:transform .25s,background .25s,box-shadow .25s
+}
+.topic-btn:after{content:"→";position:absolute;right:13px;opacity:0;transform:translateX(-8px);transition:.25s;color:var(--primary);font-weight:800}.topic-btn:hover{transform:translateX(4px);background:rgba(91,92,240,.07);box-shadow:0 8px 22px rgba(91,92,240,.07)}.topic-btn:hover:after{opacity:1;transform:translateX(0)}
+.topic-btn.active{background:linear-gradient(135deg,rgba(91,92,240,.13),rgba(155,92,255,.10));border-color:rgba(91,92,240,.20);box-shadow:0 10px 25px rgba(91,92,240,.08)}
+.topic-num{width:34px;height:34px;border-radius:11px}.topic-btn.active .topic-num{box-shadow:0 8px 18px rgba(91,92,240,.28)}
+
+.hero{padding:32px;margin-bottom:26px;min-height:190px;display:flex;align-items:center}
+.eyebrow{padding:7px 10px;border-radius:999px;background:rgba(91,92,240,.09);display:inline-block}.hero h1{font-size:clamp(32px,4vw,52px);letter-spacing:-1.5px;line-height:1.05;margin:12px 0}.hero p{font-size:15px;line-height:1.7}
+.progress-wrap{width:290px}.progress-text{font-size:13px;margin-bottom:10px}.progress{height:12px;background:rgba(148,163,184,.15);box-shadow:inset 0 2px 4px rgba(15,23,42,.06)}.progress span{background:linear-gradient(90deg,var(--primary),var(--primary2),#22c55e);background-size:200% 100%;animation:progressGlow 3s linear infinite}
+.quiz-head{margin:0 2px 17px}.quiz-head h2{font-size:25px}.section-tag{padding:5px 9px;border-radius:999px;background:rgba(91,92,240,.08)}
+.ghost-btn,.nav-btn{border-radius:14px;transition:.25s;box-shadow:0 7px 18px rgba(15,23,42,.05)}.ghost-btn:hover,.nav-btn:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 12px 25px rgba(91,92,240,.12)}
+.questions{gap:18px}.question-card{padding:24px;border-radius:23px;animation:cardIn .45s ease both}.question-card:hover{transform:translateY(-4px);box-shadow:0 28px 65px rgba(30,41,59,.14)}
+.question-top{gap:16px}.q-number{min-width:46px;height:46px;border-radius:14px;font-size:14px;box-shadow:0 8px 20px rgba(91,92,240,.10)}.q-text{font-size:19px;line-height:1.75;font-weight:650;letter-spacing:.05px}
+.answer-row{gap:16px;margin:22px auto 0!important;justify-content:center!important}.answer,button.answer{width:60px!important;min-width:60px!important;max-width:60px!important;height:60px!important;min-height:60px!important;max-height:60px!important;border-radius:50%!important;font-size:17px!important;border:2px solid var(--line);box-shadow:0 10px 22px rgba(15,23,42,.08);position:relative;overflow:hidden;transition:transform .25s,box-shadow .25s,border-color .25s}
+.answer:before{content:"";position:absolute;inset:5px;border-radius:50%;background:linear-gradient(135deg,rgba(255,255,255,.20),transparent);pointer-events:none}.answer:hover{transform:translateY(-5px) scale(1.05)!important;box-shadow:0 16px 30px rgba(15,23,42,.14)!important}.answer.true.selected{box-shadow:0 12px 28px rgba(22,163,74,.22)!important}.answer.false.selected{box-shadow:0 12px 28px rgba(220,38,38,.20)!important}
+.translation{margin:17px 0 0 62px;border-radius:15px;padding:14px 16px;font-size:14px;line-height:1.7;background:rgba(91,92,240,.045)}
+.pager{margin:30px 0 10px}.nav-btn{padding:13px 20px}.nav-btn.primary{box-shadow:0 12px 28px rgba(91,92,240,.24);background:linear-gradient(135deg,var(--primary),var(--primary2));background-size:200% 100%;animation:buttonGradient 4s ease infinite}
+footer{padding:26px;font-size:12px}
+.bg-orb{opacity:.18;filter:blur(85px);animation:orbMove 12s ease-in-out infinite alternate}.orb1{background:#6366f1}.orb2{background:#a855f7}.orb3{background:#06b6d4}
+
+@keyframes cardIn{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes brandFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes shine{0%{transform:translateX(-90%) rotate(15deg)}55%,100%{transform:translateX(90%) rotate(15deg)}}
+@keyframes progressGlow{0%{background-position:0 0}100%{background-position:200% 0}}
+@keyframes buttonGradient{0%,100%{background-position:0 50%}50%{background-position:100% 50%}}
+@keyframes orbMove{to{transform:translate(45px,-35px) scale(1.12)}}
+
+@media(max-width:900px){
+  .brand-badge{display:none}.app{grid-template-columns:1fr}.sidebar{position:relative;top:0}.hero{align-items:stretch}.progress-wrap{width:100%}
+}
+@media(max-width:560px){
+  .topbar{height:72px}.brand strong{font-size:18px}.brand-copy{min-width:auto}.brand span{display:none}.search-section{padding:15px 3% 0!important}.search-section .search-box,.search-section .search-box input{height:56px!important}.search-section .search-box input{font-size:16px!important;padding-left:48px!important;border-radius:19px!important}.app{padding:20px 3% 28px}.hero{padding:24px}.hero h1{font-size:34px}.q-text{font-size:17px;line-height:1.7}.question-card{padding:19px}.translation{margin-left:0}.answer,button.answer{width:54px!important;height:54px!important;min-width:54px!important;max-width:54px!important;min-height:54px!important;max-height:54px!important}.pager{gap:8px}.nav-btn{padding:11px 12px;font-size:12px}
+}
+
+/* PREMIUM LIGHT-MODE V/F BUTTONS */
+.answer-row{
+  gap:18px !important;
+}
+
+.answer{
+  position:relative !important;
+  overflow:hidden !important;
+  border:2px solid rgba(99,91,255,.16) !important;
+  background:linear-gradient(145deg,#ffffff,#f5f7ff) !important;
+  color:#334155 !important;
+  box-shadow:0 8px 22px rgba(71,85,105,.12), inset 0 1px 0 rgba(255,255,255,.9) !important;
+  transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease !important;
+}
+
+.answer::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  border-radius:50%;
+  background:linear-gradient(135deg,rgba(99,91,255,.18),rgba(139,92,246,.02));
+  z-index:-1;
+}
+
+.answer::after{
+  content:"";
+  position:absolute;
+  width:18px;
+  height:70px;
+  top:-10px;
+  left:-35px;
+  transform:rotate(25deg);
+  background:rgba(255,255,255,.75);
+  transition:left .45s ease;
+}
+
+.answer:hover{
+  transform:translateY(-5px) scale(1.06) !important;
+  box-shadow:0 14px 30px rgba(71,85,105,.18),0 0 0 5px rgba(99,91,255,.07) !important;
+}
+
+.answer:hover::after{
+  left:75px;
+}
+
+/* V = elegant green */
+.answer.true{
+  color:#15803d !important;
+}
+
+.answer.true:hover{
+  border-color:#22c55e !important;
+  box-shadow:0 14px 30px rgba(34,197,94,.20),0 0 0 5px rgba(34,197,94,.08) !important;
+}
+
+.answer.true.selected{
+  background:linear-gradient(145deg,#22c55e,#16a34a) !important;
+  color:#fff !important;
+  border-color:#16a34a !important;
+  box-shadow:0 12px 28px rgba(22,163,74,.32),0 0 0 6px rgba(34,197,94,.12) !important;
+  transform:translateY(-3px) scale(1.05) !important;
+}
+
+/* F = elegant red */
+.answer.false{
+  color:#dc2626 !important;
+}
+
+.answer.false:hover{
+  border-color:#ef4444 !important;
+  box-shadow:0 14px 30px rgba(239,68,68,.20),0 0 0 5px rgba(239,68,68,.08) !important;
+}
+
+.answer.false.selected{
+  background:linear-gradient(145deg,#ef4444,#dc2626) !important;
+  color:#fff !important;
+  border-color:#dc2626 !important;
+  box-shadow:0 12px 28px rgba(220,38,38,.32),0 0 0 6px rgba(239,68,68,.12) !important;
+  transform:translateY(-3px) scale(1.05) !important;
+}
+
+/* Keep unselected controls crisp in light mode */
+.answer.true:not(.selected),
+.answer.false:not(.selected){
+  opacity:1 !important;
+}
+
+/* Gentle pulse after selection */
+@keyframes vfPop{
+  0%{transform:scale(.82)}
+  60%{transform:scale(1.10)}
+  100%{transform:scale(1.05)}
+}
+
+.answer.selected{
+  animation:vfPop .35s ease-out !important;
+}
+
+/* Better small-screen spacing */
+@media(max-width:560px){
+  .answer-row{
+    gap:14px !important;
+  }
+}
+
+</style>
+</head>
+<body>
+  <div class="bg-orb orb1"></div><div class="bg-orb orb2"></div><div class="bg-orb orb3"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-icon">🚦</div>
+      <div class="brand-copy"><strong>Patente Quiz</strong><span>Italian Driving Licence</span></div>
+      <span class="brand-badge">4 TOPICS</span>
+    </div>
+    <div class="toolbar">
+      <select id="languageSelect" aria-label="Language">
+        <option value="it">🇮🇹 Italiano</option>
+        <option value="en">🇬🇧 English</option>
+        <option value="ur">🇵🇰 اردو</option>
+        <option value="ps">🇵🇰 پښتو (پاکستان)</option>
+      </select>
+      <button id="themeBtn" class="icon-btn" title="Toggle dark/light mode">☀️</button>
+    </div>
+  </header>
+
+  <div class="search-section">
+    <div class="search-box">
+      <span class="search-icon">🔎</span>
+      <input id="topicSearch" type="search" placeholder="Search topic..." aria-label="Search topic">
+      <button id="clearSearch" type="button" class="clear-search" aria-label="Clear search">×</button>
+    </div>
+  </div>
+
+  <main class="app">
+    <aside class="sidebar">
+      <div class="side-title">
+        <div>
+          <small id="topicsLabel">TOPICS</small>
+          <h2 id="topicCount">4 Topics</h2>
+        </div>
+        <span class="pill" id="totalCount">0</span>
+      </div>
+      <div id="topicList" class="topic-list"></div>
+
+    </aside>
+
+    <section class="content">
+      <div class="hero">
+        <div>
+          <div class="eyebrow">DRIVING LICENCE THEORY</div>
+          <h1 id="topicTitle">Traffic Signs</h1>
+          <p id="topicDescription">Practice true and false questions topic by topic.</p>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-text"><span id="progressLabel">Progress</span><b id="progressText">0 / 0</b></div>
+          <div class="progress"><span id="progressBar"></span></div>
+        </div>
+      </div>
+
+      <div class="quiz-head">
+        <div>
+          <span class="section-tag" id="questionTag">QUESTIONS</span>
+          <h2 id="questionHeading">Topic Questions</h2>
+        </div>
+        <button id="resetBtn" class="ghost-btn">↻ <span id="resetText">Reset Topic</span></button>
+      </div>
+
+      <div id="questionContainer" class="questions"></div>
+
+      <div class="pager">
+        <button id="prevBtn" class="nav-btn">← <span id="prevText">Previous Topic</span></button>
+        <span id="pageText">1 / 4</span>
+        <button id="nextBtn" class="nav-btn primary"> <span id="nextText">Next Topic</span> →</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>Patente Quiz • Book-based theory quiz</footer>
+  <script>
+const topics = [
+  {
+    title:{it:"Presenza di veicoli industriali e/o autobus",en:"Industrial Vehicles and/or Buses",ur:"صنعتی گاڑیوں اور/یا بسوں کی موجودگی"},
+    desc:{it:"Pericoli legati a veicoli di grandi dimensioni e massa.",en:"Risks related to large vehicles and heavy masses.",ur:"بڑی جسامت اور زیادہ وزن والی گاڑیوں سے متعلق خطرات۔"},
+    questions:[
+      {code:"27028 V01",it:"Alla guida di un'autovettura è opportuno valutare costantemente la potenziale pericolosità dei veicoli industriali e degli autobus, a causa della loro massa notevolmente maggiore.",en:"When driving a car, it is advisable to constantly assess the potential danger of industrial vehicles and buses because of their considerably greater mass.",ur:"کار چلاتے وقت صنعتی گاڑیوں اور بسوں کے ممکنہ خطرے کا مسلسل اندازہ لگانا مناسب ہے، کیونکہ ان کا وزن بہت زیادہ ہوتا ہے۔",a:true},
+      {code:"27028 V02",it:"Il conducente di motociclo o di autovettura deve saper valutare nella guida gli altri rischi derivanti da autocarri, autotreni o autoarticolati che non rispettano i limiti di velocità.",en:"A motorcycle or car driver must be able to assess the additional risks caused by trucks, road trains or articulated vehicles that do not respect speed limits.",ur:"موٹر سائیکل یا کار کے ڈرائیور کو ان ٹرکوں، ٹریلرز یا آرٹیکیولیٹڈ گاڑیوں سے پیدا ہونے والے اضافی خطرات کا اندازہ لگانا چاہیے جو رفتار کی حدود کی پابندی نہیں کرتیں۔",a:true},
+      {code:"27026 V01",it:"Risulta maggiormente pericolosa la collisione tra veicoli dotati di masse molto diverse tra loro.",en:"A collision between vehicles with very different masses is more dangerous.",ur:"بہت مختلف وزن رکھنے والی گاڑیوں کے درمیان تصادم زیادہ خطرناک ہوتا ہے۔",a:true},
+      {code:"27026 V02",it:"Guidando una piccola autovettura è necessario valutare i maggiori rischi derivanti da possibili tamponamenti o collisioni con autovettura di massa superiore.",en:"When driving a small car, it is necessary to assess the greater risks arising from possible rear-end collisions or collisions with a heavier car.",ur:"چھوٹی کار چلاتے وقت زیادہ وزن والی کار سے ممکنہ ٹکر یا تصادم کے زیادہ خطرات کا اندازہ لگانا ضروری ہے۔",a:true}
+    ]
+  },
+  {
+    title:{it:"Circolazione dietro a veicolo con carico instabile",en:"Driving Behind a Vehicle with an Unstable Load",ur:"غیر مستحکم سامان والی گاڑی کے پیچھے چلنا"},
+    desc:{it:"Distanza di sicurezza e sorpasso dietro veicoli con carichi instabili o sporgenti.",en:"Safety distance and overtaking behind vehicles carrying unstable or projecting loads.",ur:"غیر مستحکم یا باہر نکلے ہوئے سامان والی گاڑیوں کے پیچھے حفاظتی فاصلہ اور اوورٹیکنگ۔"},
+    questions:[
+      {code:"27032 V01",it:"Circolando dietro ad un veicolo che trasporta un carico in pericolo di cadere, è opportuno aumentare la distanza di sicurezza, specie se si è in salita.",en:"When driving behind a vehicle carrying a load in danger of falling, it is advisable to increase the safety distance, especially when travelling uphill.",ur:"ایسی گاڑی کے پیچھے چلتے وقت جس کا سامان گرنے کے خطرے میں ہو، حفاظتی فاصلہ بڑھانا مناسب ہے، خاص طور پر چڑھائی پر۔",a:true},
+      {code:"27032 V02",it:"Circolando dietro ad un veicolo che ha un carico instabile, è opportuno aumentare la distanza di sicurezza e sorpassarlo appena possibile.",en:"When driving behind a vehicle with an unstable load, it is advisable to increase the safety distance and overtake it as soon as possible.",ur:"غیر مستحکم سامان والی گاڑی کے پیچھے چلتے وقت حفاظتی فاصلہ بڑھانا اور ممکن ہو تو جلد اوورٹیک کرنا مناسب ہے۔",a:true},
+      {code:"27032 V03",it:"Circolando dietro ad un veicolo che trasporta un carico che sta per cadere, è opportuno avvertire il conducente del potenziale pericolo.",en:"When driving behind a vehicle carrying a load that is about to fall, it is advisable to warn the driver of the potential danger.",ur:"ایسی گاڑی کے پیچھے چلتے وقت جس کا سامان گرنے والا ہو، ڈرائیور کو ممکنہ خطرے سے آگاہ کرنا مناسب ہے۔",a:true},
+      {code:"27032 V04",it:"Circolando dietro ad un veicolo che ha un carico poco sicuro, conviene non stargli troppo vicino, così da riuscire a fermarsi in tempo, in caso di caduta della merce trasportata.",en:"When driving behind a vehicle with an insecure load, it is advisable not to stay too close so that you can stop in time if the transported goods fall.",ur:"غیر محفوظ سامان والی گاڑی کے پیچھے بہت قریب نہیں چلنا چاہیے تاکہ سامان گرنے کی صورت میں بروقت رک سکیں۔",a:true},
+      {code:"27032 V05",it:"Circolando dietro ad un veicolo che ha un carico instabile, bisogna stare attenti, soprattutto quando frena o svolta, per la possibile caduta della merce trasportata.",en:"When driving behind a vehicle with an unstable load, you must be especially careful when it brakes or turns because the transported goods may fall.",ur:"غیر مستحکم سامان والی گاڑی کے پیچھے خاص طور پر اس وقت محتاط رہنا چاہیے جب وہ بریک لگائے یا موڑے، کیونکہ سامان گر سکتا ہے۔",a:true},
+      {code:"27032 V06",it:"Circolando dietro ad un veicolo che ha un carico sporgente, può risultare difficile accorgersi che intende svoltare, se gli indicatori di direzione sono nascosti dalla merce sporgente.",en:"When driving behind a vehicle with a projecting load, it may be difficult to notice that it intends to turn if its direction indicators are hidden by the projecting goods.",ur:"باہر نکلے ہوئے سامان والی گاڑی کے پیچھے چلتے وقت اس کے مڑنے کا اندازہ لگانا مشکل ہو سکتا ہے اگر سامان نے اشارہ دینے والی لائٹس چھپا دی ہوں۔",a:true}
+    ]
+  },
+  {
+    title:{it:"22.3 - Primo soccorso",en:"22.3 - First Aid",ur:"22.3 - ابتدائی طبی امداد"},
+    desc:{it:"Soccorso agli infortunati della strada e comportamento del soccorritore.",en:"First aid for road accident victims and correct behaviour of the rescuer.",ur:"سڑک کے حادثے میں زخمی افراد کی ابتدائی امداد اور مدد کرنے والے کا درست طرزِ عمل۔"},
+    questions:[
+      {code:"32007 V01",it:"Soccorrere un ferito della strada è obbligatorio per legge.",en:"Helping an injured person on the road is required by law.",ur:"سڑک پر زخمی شخص کی مدد کرنا قانون کے مطابق لازمی ہے۔",a:true},
+      {code:"32007 V02",it:"Soccorrere un ferito della strada può significare salvargli la vita.",en:"Helping an injured person on the road can mean saving their life.",ur:"سڑک پر زخمی شخص کی مدد کرنا اس کی جان بچانے کا سبب بن سکتا ہے۔",a:true},
+      {code:"32007 V03",it:"Soccorrere subito un ferito della strada può evitare che subisca ulteriori danni fisici.",en:"Helping an injured person immediately can prevent further physical harm.",ur:"زخمی شخص کی فوری مدد اسے مزید جسمانی نقصان سے بچا سکتی ہے۔",a:true},
+      {code:"32008 V01",it:"Il fine del primo soccorso è quello di cercare di mantenere in vita il ferito con semplici e immediati interventi.",en:"The purpose of first aid is to try to keep the injured person alive with simple and immediate actions.",ur:"ابتدائی طبی امداد کا مقصد آسان اور فوری اقدامات کے ذریعے زخمی شخص کو زندہ رکھنے کی کوشش کرنا ہے۔",a:true},
+      {code:"32008 V02",it:"Il fine del primo soccorso è quello di assistere il ferito, come meglio possibile, in attesa che arrivi il soccorso medico.",en:"The purpose of first aid is to assist the injured person as well as possible while waiting for medical help to arrive.",ur:"ابتدائی طبی امداد کا مقصد طبی مدد پہنچنے تک زخمی شخص کی ممکنہ حد تک بہترین مدد کرنا ہے۔",a:true},
+      {code:"32008 V03",it:"Nell'intervento di primo soccorso bisogna evitare, per quanto possibile, che il ferito subisca ulteriori danni.",en:"During first aid, further harm to the injured person should be avoided as far as possible.",ur:"ابتدائی طبی امداد کے دوران ممکنہ حد تک زخمی شخص کو مزید نقصان سے بچانا چاہیے۔",a:true},
+      {code:"32008 V04",it:"Nelle operazioni di primo soccorso bisogna evitare che al ferito vengano praticati interventi sbagliati o dannosi.",en:"During first aid, incorrect or harmful interventions must be avoided.",ur:"ابتدائی طبی امداد کے دوران زخمی شخص پر غلط یا نقصان دہ اقدامات کرنے سے بچنا چاہیے۔",a:true},
+      {code:"32018 V01",it:"Dopo un incidente stradale, il soccorritore che interviene deve valutare bene la situazione, per proteggere gli infortunati da altri pericoli.",en:"After a road accident, the rescuer should carefully assess the situation to protect injured people from further dangers.",ur:"سڑک کے حادثے کے بعد مدد کرنے والے کو صورتحال کا اچھی طرح جائزہ لینا چاہیے تاکہ زخمی افراد کو مزید خطرات سے بچایا جا سکے۔",a:true},
+      {code:"32018 V02",it:"Dopo un incidente stradale, il soccorritore che interviene deve assistere gli infortunati al meglio delle sue possibilità, senza però prendersi iniziative di specifica competenza medica.",en:"After a road accident, the rescuer should assist injured people as well as possible without taking actions requiring specific medical expertise.",ur:"سڑک کے حادثے کے بعد مدد کرنے والے کو اپنی استطاعت کے مطابق زخمی افراد کی مدد کرنی چاہیے، لیکن مخصوص طبی مہارت والے اقدامات خود نہیں کرنے چاہئیں۔",a:true},
+      {code:"32018 V03",it:"Dopo un incidente stradale, il soccorritore che interviene deve prestare assistenza agli infortunati, secondo le proprie possibilità e conoscenze.",en:"After a road accident, the rescuer should assist injured people according to their own abilities and knowledge.",ur:"سڑک کے حادثے کے بعد مدد کرنے والے کو اپنی صلاحیت اور معلومات کے مطابق زخمی افراد کی مدد کرنی چاہیے۔",a:true}
+    ]
+  },
+  {
+    title:{it:"Stato di shock",en:"Shock",ur:"شاک کی حالت"},
+    desc:{it:"Cause, manifestazioni e interventi nello stato di shock.",en:"Causes, signs and correct first-aid measures for shock.",ur:"شاک کی وجوہات، علامات اور ابتدائی امداد کے درست اقدامات۔"},
+    questions:[
+      {code:"32019 V01",it:"Lo stato di shock può essere causato da un forte dolore.",en:"Shock can be caused by severe pain.",ur:"شاک شدید درد کی وجہ سے ہو سکتا ہے۔",a:true},
+      {code:"32019 V02",it:"Lo stato di shock può essere causato da una forte emozione.",en:"Shock can be caused by a strong emotion.",ur:"شاک شدید جذبات کی وجہ سے ہو سکتا ہے۔",a:true},
+      {code:"32019 V03",it:"Lo stato di shock può essere causato da una forte perdita di sangue.",en:"Shock can be caused by severe blood loss.",ur:"شاک شدید خون کے ضیاع کی وجہ سے ہو سکتا ہے۔",a:true},
+      {code:"32019 V04",it:"Lo stato di shock può essere causato da un forte trauma.",en:"Shock can be caused by severe trauma.",ur:"شاک شدید صدمے کی وجہ سے ہو سکتا ہے۔",a:true},
+      {code:"32012 V01",it:"Lo stato di shock si manifesta con pelle molto pallida e fredda.",en:"Shock is manifested by very pale and cold skin.",ur:"شاک کی علامت بہت پیلی اور ٹھنڈی جلد ہو سکتی ہے۔",a:true},
+      {code:"32012 V02",it:"Lo stato di shock si manifesta con presenza di sudore freddo alla fronte.",en:"Shock can be manifested by cold sweat on the forehead.",ur:"شاک کی علامت ماتھے پر ٹھنڈا پسینہ آنا ہو سکتی ہے۔",a:true},
+      {code:"32012 V03",it:"Lo stato di shock si manifesta con presenza di brividi, pelle molto pallida e sudorazione fredda alla fronte.",en:"Shock is manifested by chills, very pale skin and cold sweating on the forehead.",ur:"شاک کی علامت کپکپی، بہت پیلی جلد اور ماتھے پر ٹھنڈا پسینہ آنا ہے۔",a:false},
+      {code:"32012 V04",it:"Lo stato di shock si manifesta con pelle molto pallida, sudorazione fredda, frequenti battiti del cuore.",en:"Shock can be manifested by very pale skin, cold sweating and frequent heartbeats.",ur:"شاک کی علامت بہت پیلی جلد، ٹھنڈا پسینہ اور دل کی تیز دھڑکنیں ہو سکتی ہیں۔",a:true},
+      {code:"32012 V05",it:"Lo stato di shock può manifestarsi con improvvisa pronuncia di frasi e parole senza senso.",en:"Shock may be manifested by suddenly uttering senseless phrases and words.",ur:"شاک کی حالت میں اچانک بے معنی جملے اور الفاظ بولے جا سکتے ہیں۔",a:true},
+      {code:"32013 V01",it:"Un ferito in stato di shock va messo a terra e, se possibile, con le gambe sollevate.",en:"A person in shock should be laid on the ground, if possible with the legs raised.",ur:"شاک کی حالت میں زخمی شخص کو زمین پر لٹانا چاہیے اور ممکن ہو تو ٹانگیں اونچی رکھنی چاہئیں۔",a:true},
+      {code:"32013 V02",it:"Un ferito in stato di shock va coperto come meglio possibile, per evitare che si raffreddi.",en:"A person in shock should be covered as well as possible to prevent them from getting cold.",ur:"شاک کی حالت میں زخمی شخص کو ممکن حد تک ڈھانپنا چاہیے تاکہ وہ ٹھنڈا نہ ہو۔",a:true},
+      {code:"32013 V03",it:"Un ferito in stato di shock va disteso, tenendo possibilmente le gambe sollevate.",en:"A person in shock should be laid down, keeping the legs raised if possible.",ur:"شاک کی حالت میں زخمی شخص کو لٹانا چاہیے اور ممکن ہو تو ٹانگیں اونچی رکھنی چاہئیں۔",a:true}
+    ]
+  }
+];
+
+// Pakistani Pashto (Peshawar/Khyber Pakhtunkhwa) translations
+const psTopicData = [
+  {title:"د صنعتي وسایطو او/یا بسونو شتون",desc:"د لویو وسایطو او د زیات وزن له امله رامنځته کېدونکي خطرونه."},
+  {title:"د بې ثباته بار لرونکي موټر شاته تګ",desc:"د بې ثباته یا له موټر څخه راوتلي بار لرونکو وسایطو شاته د خوندي واټن او سبقت اصول."},
+  {title:"22.3 - لومړنۍ مرستې",desc:"د سړک د پېښو ټپیانو ته لومړنۍ مرسته او د مرستندوی سم چلند."},
+  {title:"د شاک حالت",desc:"د شاک لاملونه، نښې او د لومړنیو مرستو سم اقدامات."}
+];
+const psQuestions = {
+  "27028 V01":"کله چې موټر چلوئ، باید د صنعتي وسایطو او بسونو احتمالي خطر په دوامداره توګه وارزوئ، ځکه چې د هغوی وزن ډېر زیات وي.",
+  "27028 V02":"د موټرسایکل یا موټر چلوونکی باید وکولای شي هغه اضافي خطرونه وارزوي چې د هغو لارۍ، ټرکونو یا مفصلي وسایطو له امله رامنځته کېږي چې د سرعت له حدودو سرغړونه کوي.",
+  "27026 V01":"د هغو وسایطو ترمنځ ټکر چې وزنونه یې له یو بل څخه ډېر توپیر ولري، ډېر خطرناک وي.",
+  "27026 V02":"د کوچني موټر د چلولو پر مهال باید د له دروند موټر سره د احتمالي شا له خوا ټکر یا تصادم زیات خطرونه وارزول شي.",
+  "27032 V01":"د داسې موټر شاته د تګ پر مهال چې د لوېدو په خطر کې بار وړي، باید خوندي واټن زیات شي، په ځانګړي ډول د پورته تګ پر مهال.",
+  "27032 V02":"د بې ثباته بار لرونکي موټر شاته د تګ پر مهال باید خوندي واټن زیات او د امکان تر حده ژر ترې سبقت واخیستل شي.",
+  "27032 V03":"د داسې موټر شاته د تګ پر مهال چې بار یې د لوېدو په حال کې وي، مناسب ده چې چلوونکی له احتمالي خطره خبر کړل شي.",
+  "27032 V04":"د ناامنه بار لرونکي موټر شاته باید ډېر نږدې ونه ځئ، څو که بار ولوېږي، پر وخت ودرېدلی شئ.",
+  "27032 V05":"د بې ثباته بار لرونکي موټر شاته باید په ځانګړي ډول هغه وخت احتیاط وشي چې موټر بریک وهي یا تاوېږي، ځکه بار لوېدلی شي.",
+  "27032 V06":"د راوتلي بار لرونکي موټر شاته کېدای شي د هغه د تاوېدو اراده معلومول ستونزمن وي، که د بار له امله د لوري څراغونه پټ وي.",
+  "32007 V01":"په سړک کې د ټپي کس مرسته کول د قانون له مخې لازمي دي.",
+  "32007 V02":"په سړک کې د ټپي کس مرسته کول د هغه د ژوند د ژغورلو معنا لرلی شي.",
+  "32007 V03":"د سړک د ټپي کس سمدستي مرسته کول کولی شي د نورو فزیکي زیانونو مخه ونیسي.",
+  "32008 V01":"د لومړنیو مرستو موخه دا ده چې د ساده او سمدستي اقداماتو له لارې د ټپي کس ژوندی پاتې کېدل یقیني کولو هڅه وشي.",
+  "32008 V02":"د لومړنیو مرستو موخه دا ده چې د طبي مرستې تر رسېدو پورې له ټپي کس سره تر خپلې وسې پورې مرسته وشي.",
+  "32008 V03":"د لومړنیو مرستو پر مهال باید تر ممکنه حده د ټپي کس د لا زیاتو زیانونو مخه ونیول شي.",
+  "32008 V04":"د لومړنیو مرستو پر مهال باید له ټپي کس سره د ناسم یا زیان رسوونکي اقدام څخه ډډه وشي.",
+  "32018 V01":"د سړک له پېښې وروسته، مرستندوی باید وضعیت په ښه توګه وارزوي، څو ټپیان له نورو خطرونو څخه خوندي کړي.",
+  "32018 V02":"د سړک له پېښې وروسته، مرستندوی باید د خپلې وسې تر حده له ټپیانو سره مرسته وکړي، خو هغه اقدامات دې نه کوي چې ځانګړې طبي وړتیا غواړي.",
+  "32018 V03":"د سړک له پېښې وروسته، مرستندوی باید د خپلې وړتیا او پوهې له مخې له ټپیانو سره مرسته وکړي.",
+  "32019 V01":"د شاک حالت د شدید درد له امله رامنځته کېدای شي.",
+  "32019 V02":"د شاک حالت د قوي احساساتي اغېز له امله رامنځته کېدای شي.",
+  "32019 V03":"د شاک حالت د ډېرې وینې د ضایع کېدو له امله رامنځته کېدای شي.",
+  "32019 V04":"د شاک حالت د سخت ټپ یا صدمې له امله رامنځته کېدای شي.",
+  "32012 V01":"د شاک نښه کېدای شي ډېره سپینه او سړه پوستکی وي.",
+  "32012 V02":"د شاک نښه کېدای شي پر تندي یخ خوله وي.",
+  "32012 V03":"د شاک نښې کېدای شي رېږدېدل، ډېره سپینه پوستکی او پر تندي یخې خولې وي.",
+  "32012 V04":"د شاک نښه کېدای شي ډېره سپینه پوستکی، یخه خوله او د زړه چټک ضربان وي.",
+  "32012 V05":"شاک کېدای شي د بې معنا جملو او خبرو ناڅاپي ویلو سره څرګند شي.",
+  "32013 V01":"د شاک په حالت کې ټپي کس باید پر ځمکه څملول شي او که امکان ولري، پښې یې پورته وساتل شي.",
+  "32013 V02":"د شاک په حالت کې ټپي کس باید تر ممکنه حده وپوښل شي، څو یخ نه شي.",
+  "32013 V03":"د شاک په حالت کې ټپي کس باید څملول شي او که امکان ولري، پښې یې پورته وساتل شي."
+};
+topics.forEach((t,i)=>{ t.title.ps=psTopicData[i].title; t.desc.ps=psTopicData[i].desc; t.questions.forEach(q=>q.ps=psQuestions[q.code]||q.en); });
+
+let state = {
+  topic:0,
+  lang:"it",
+  dark:false,
+  answers: JSON.parse(localStorage.getItem("patenteAnswers") || "{}")
+};
+
+const $ = id => document.getElementById(id);
+
+function save(){localStorage.setItem("patenteAnswers",JSON.stringify(state.answers));}
+
+function key(t,q){return `${t}-${q}`}
+
+function renderTopics(){
+  $("topicList").innerHTML = topics.map((t,i)=>`
+    <button class="topic-btn ${i===state.topic?'active':''}" data-topic="${i}">
+      <span class="topic-num">${i+1}</span>
+      <span class="topic-name">${t.title[state.lang]}</span>
+      <span class="topic-q">${t.questions.length}</span>
+    </button>`).join("");
+  document.querySelectorAll(".topic-btn").forEach(b=>b.onclick=()=>{state.topic=+b.dataset.topic;render()});
+  $("topicCount").textContent = `${topics.length} ${state.lang==="it"?"Argomenti":state.lang==="ur"?"موضوعات":state.lang==="ps"?"موضوعات":"Topics"}`;
+  $("totalCount").textContent = topics.reduce((n,t)=>n+t.questions.length,0);
+}
+
+function renderQuestions(){
+  const t=topics[state.topic];
+  $("questionContainer").innerHTML=t.questions.map((q,i)=>{
+    const selected=state.answers[key(state.topic,i)];
+    const shown = state.lang==="it" ? q.it : (q[state.lang] || q.en);
+    const translation = state.lang==="it" ? "" : `<div class="translation"><b>${state.lang==="ur"?"Italiano / اصل متن":state.lang==="ps"?"ایټالوي اصلي متن":"Italian original"}</b>${q.it}</div>`;
+    return `<article class="question-card">
+      <div class="question-top"><span class="q-number">${i+1}</span><div class="q-text">${q.code ? `<small class="book-code">${q.code}</small>` : ""}${shown}</div></div>
+      <div class="answer-row">
+        <div class="answer auto-answer true ${q.a===true?'selected':''}">${state.lang==='en'?'T':'V'}</div>
+        <div class="answer auto-answer false ${q.a===false?'selected':''}">F</div>
+      </div>${translation}
+    </article>`;
+  }).join("");
+}
+
+function updateStats(){
+  const current=topics[state.topic];
+  const done=current.questions.length;
+  $("progressText").textContent=`${done} / ${current.questions.length}`;
+  $("progressBar").style.width="100%";
+}
+
+function render(){
+  const t=topics[state.topic];
+  renderTopics();
+  $("topicTitle").textContent=t.title[state.lang] || t.title.en;
+  $("topicDescription").textContent=t.desc[state.lang] || t.desc.en;
+  $("questionHeading").textContent=state.lang==="it"?"Domande del tema":state.lang==="ur"?"موضوع کے سوالات":state.lang==="ps"?"د موضوع پوښتنې":"Topic Questions";
+  $("questionTag").textContent=state.lang==="it"?"DOMANDE":state.lang==="ur"?"سوالات":state.lang==="ps"?"پوښتنې":"QUESTIONS";
+  $("progressLabel").textContent=state.lang==="it"?"Progresso":state.lang==="ur"?"پیش رفت":state.lang==="ps"?"پرمختګ":"Progress";
+  $("resetText").textContent=state.lang==="it"?"Azzera tema":state.lang==="ur"?"موضوع ری سیٹ کریں":state.lang==="ps"?"موضوع بیا تنظیم کړئ":"Reset Topic";
+  $("prevText").textContent=state.lang==="it"?"Tema precedente":state.lang==="ur"?"پچھلا موضوع":state.lang==="ps"?"مخکینی موضوع":"Previous Topic";
+  $("nextText").textContent=state.lang==="it"?"Tema successivo":state.lang==="ur"?"اگلا موضوع":state.lang==="ps"?"راتلونکی موضوع":"Next Topic";
+  $("pageText").textContent=`${state.topic+1} / ${topics.length}`;
+  $("prevBtn").disabled=state.topic===0;$("nextBtn").disabled=state.topic===topics.length-1;
+  renderQuestions();updateStats();
+}
+
+$("languageSelect").onchange=e=>{state.lang=e.target.value;render()};
+$("themeBtn").onclick=()=>{state.dark=!state.dark;document.body.classList.toggle("dark",state.dark);$("themeBtn").textContent=state.dark?"🌙":"☀️";localStorage.setItem("patenteDark",state.dark)};
+$("prevBtn").onclick=()=>{if(state.topic>0){state.topic--;render();window.scrollTo({top:0,behavior:"smooth"})}};
+$("nextBtn").onclick=()=>{if(state.topic<topics.length-1){state.topic++;render();window.scrollTo({top:0,behavior:"smooth"})}};
+$("resetBtn").onclick=()=>{
+  topics[state.topic].questions.forEach((_,i)=>delete state.answers[key(state.topic,i)]);
+  save();render();
+};
+
+state.dark=localStorage.getItem("patenteDark")==="true";
+document.body.classList.toggle("dark",state.dark);
+$("themeBtn").textContent=state.dark?"🌙":"☀️";
+$("languageSelect").value=state.lang;
+render();
+
+
+/* TOPIC SEARCH */
+const topicSearch = document.getElementById('topicSearch');
+const clearSearch = document.getElementById('clearSearch');
+
+function updateTopicSearch(){
+  const query = (topicSearch.value || '').trim().toLocaleLowerCase();
+  const buttons = document.querySelectorAll('#topicList .topic-btn');
+  let visible = 0;
+
+  buttons.forEach(btn => {
+    const name = (btn.querySelector('.topic-name')?.textContent || '').toLocaleLowerCase();
+    const match = !query || name.includes(query);
+    btn.classList.toggle('search-hidden', !match);
+    if(match) visible++;
+  });
+
+  clearSearch.style.display = query ? 'block' : 'none';
+
+  // If there is exactly one matching topic, open it automatically.
+  if(query && visible === 1){
+    const matchBtn = [...buttons].find(btn => !btn.classList.contains('search-hidden'));
+    if(matchBtn && !matchBtn.classList.contains('active')) matchBtn.click();
+  }
+}
+
+topicSearch.addEventListener('input', updateTopicSearch);
+
+clearSearch.addEventListener('click', () => {
+  topicSearch.value = '';
+  updateTopicSearch();
+  topicSearch.focus();
+});
+
+</script>
+</body>
+</html>
